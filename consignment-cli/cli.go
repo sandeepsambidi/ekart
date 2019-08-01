@@ -6,10 +6,9 @@ import (
 	"log"
 	"os"
 
-	pb "sandeep/ekart/consignment-service/proto/consignment"
-
 	microclient "github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/config/cmd"
+	pb "github.com/sandeepsambidi/ekart/consignment-service/proto/consignment"
 	"golang.org/x/net/context"
 )
 
@@ -31,8 +30,7 @@ func main() {
 
 	cmd.Init()
 
-	// Create new greeter client
-	client := pb.NewShippingServiceClient("go.micro.srv.consignment", microclient.DefaultClient)
+	client := pb.NewShippingService("consignment", microclient.DefaultClient)
 
 	// Contact the server and print out its response.
 	file := defaultFilename

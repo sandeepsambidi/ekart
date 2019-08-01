@@ -1,7 +1,5 @@
 syntax  = "proto3";
 
-package shippy.service.consignment;
-
 service ShippingService {
 	rpc CreateConsignment(Consignment) returns (Response) {}
 	rpc GetConsignments(GetRequest) returns (Response) {}

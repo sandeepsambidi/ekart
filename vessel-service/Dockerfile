@@ -1,6 +1,6 @@
-FROM golang:1.10.0 as builder
+FROM golang:1.10 as builder
 
-WORKDIR /go/src/sandeep/ekart/vessel-service
+WORKDIR /go/src/github.com/sandeepsambidi/ekart/vessel-service
 
 COPY . .
 
@@ -14,6 +14,6 @@ RUN apk --no-cache add ca-certificates
 
 RUN mkdir /app
 WORKDIR /app
-COPY --from=builder /go/src/sandeep/ekart/vessel-service/vessel-service .
+COPY --from=builder /go/src/github.com/sandeepsambidi/ekart/vessel-service/vessel-service .
 
 CMD ["./vessel-service"]

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"fmt"
 
-	pb "sandeep/ekart/vessel-service/proto/vessel"
+	pb "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
 
 	"github.com/micro/go-micro"
 )
@@ -56,7 +56,7 @@ func main() {
 	repo := &VesselRepository{vessels}
 
 	srv := micro.NewService(
-		micro.Name("shippy.service.vessel"),
+		micro.Name("vessel"),
 	)
 
 	srv.Init()

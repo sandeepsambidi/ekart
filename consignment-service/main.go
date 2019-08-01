@@ -7,10 +7,10 @@ import (
 	// Import the generated protobuf code
 	"context"
 
-	pb "sandeep/ekart/consignment-service/proto/consignment"
-	pbvessel "sandeep/ekart/vessel-service/proto/vessel"
+	micro "github.com/micro/go-micro"
 
-	"github.com/micro/go-micro"
+	pb "github.com/sandeepsambidi/ekart/consignment-service/proto/consignment"
+	pbvessel "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
 )
 
 type repository interface {
@@ -42,7 +42,7 @@ func (repo *Repository) GetAll() []*pb.Consignment {
 // to give you a better idea.
 type service struct {
 	repo         repository
-	vesselClient pbvessel.VesselServiceClient
+	vesselClient pbvessel.VesselService
 }
 
 // CreateConsignment - we created just one method on our service,
@@ -50,10 +50,10 @@ type service struct {
 // argument, these are handled by the gRPC server.
 func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, res *pb.Response) error {
 
-	vesselResponse, err := s.vesselClient.FindAvailable(context.Background(), &pbvessel.Specification{
-		MaxWeight: req.Weight,
-		Capacity:  int32(len(req.Containers)),
-	})
+	vesselResponse, err := s.vesselClient.FindAvailable(ctx,
+		&pbvessel.Specification{
+			MaxWeight: req.Weight,
+			Capacity:  int32(len(req.Containers))})
 
 	log.Printf("Found vessel: %s \n", vesselResponse.Vessel.Name)
 	if err != nil {
@@ -88,14 +88,13 @@ func main() {
 
 	// Create a new service. Optionally include some options here.
 	srv := micro.NewService(
-
 		// This name must match the package name given in your protobuf definition
-		micro.Name("shippy.service.consignment"),
+		micro.Name("consignment"),
 	)
 
 	// Init will parse the command line flags.
 	srv.Init()
-	vesselClient := pbvessel.NewVesselServiceClient("shippy.service.vessel", srv.Client())
+	vesselClient := pbvessel.NewVesselService("vessel", srv.Client())
 	// Register handler
 	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselClient})
 

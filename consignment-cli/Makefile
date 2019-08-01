@@ -1,5 +1,4 @@
 build:
-	docker build -t shippy-cli-consignment .
-
+	docker build -t cli-consignment .
 run:
-	docker run shippy-cli-consignment
+	docker run cli-consignment
