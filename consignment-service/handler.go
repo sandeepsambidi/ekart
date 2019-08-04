@@ -38,20 +38,24 @@ func (s *service) CreateConsignment(con context.Context, req *pbcon.Consignment,
 	req.VesselId = vesselResponse.Vessel.GetId()
 
 	//create the consignment ie add a document in consignment collection
-	createdcon, err := s.repo.Create(req)
+	erroncreate := s.repo.Create(req)
 
-	if err != nil {
+	if erroncreate != nil {
 		return err
 	}
 
 	res.Created = true
-	res.Consignment = createdcon
+	//res.Consignment = createdcon
 	return nil
 }
 
 //get all consignments
 func (s *service) GetConsignments(con context.Context, req *pbcon.GetRequest, res *pbcon.Response) error {
-	consignments := s.repo.GetAll()
+	consignments, err := s.repo.GetAll()
+
+	if err != nil {
+		return err
+	}
 	res.Consignments = consignments
 	return nil
 }

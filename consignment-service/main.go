@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
+	"os"
 
 	// Import the generated protobuf code
 
@@ -11,32 +14,24 @@ import (
 	pbvessel "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
 )
 
-type repository interface {
-	Create(*pb.Consignment) (*pb.Consignment, error)
-	GetAll() []*pb.Consignment
-}
-
-// Repository - Dummy repository, this simulates the use of a datastore
-// of some kind. We'll replace this with a real implementation later on.
-type Repository struct {
-	consignments []*pb.Consignment
-}
-
-// Create a new consignment
-func (repo *Repository) Create(consignment *pb.Consignment) (*pb.Consignment, error) {
-	updated := append(repo.consignments, consignment)
-	repo.consignments = updated
-	return consignment, nil
-}
-
-// GetAll consignments
-func (repo *Repository) GetAll() []*pb.Consignment {
-	return repo.consignments
-}
+const (
+	port          = ":50051"
+	defaultDBHost = "datastore:27017"
+)
 
 func main() {
 
-	repo := &Repository{}
+	uri := os.Getenv("DB_HOST")
+	if uri == "" {
+		uri = defaultDBHost
+	}
+	dbclientconn, dberr := CreateClient(uri)
+	if dberr != nil {
+		log.Panic(dberr)
+	}
+	defer dbclientconn.Disconnect(context.TODO())
+	consignmentCollection := dbclientconn.Database("ekart").Collection("consignments")
+	repo := &Repository{consignmentCollection}
 
 	// Create a new service. Optionally include some options here.
 	srv := micro.NewService(
