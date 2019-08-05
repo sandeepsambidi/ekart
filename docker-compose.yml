@@ -9,6 +9,7 @@ services:
     depends_on:
       - mongodb
       - vessel-service
+      - consignment-service
 
   consignment-service:
     build: ./consignment-service
@@ -16,7 +17,7 @@ services:
       - "50051:50051"
     environment: 
       MICRO_ADDRESS: ":50051"
-      DB_HOST: "datastore:27017"
+      DB_HOST: "mongodb:27017"
     depends_on:
             - mongodb
             - vessel-service
@@ -28,7 +29,7 @@ services:
       - "50052:50051"
     environment: 
         MICRO_ADDRESS: ":50051"
-        DB_HOST: "mongodb-service"
+        DB_HOST: "mongodb:27017"
     depends_on:
       - mongodb
 

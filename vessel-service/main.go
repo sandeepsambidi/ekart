@@ -42,18 +42,23 @@ func main() {
 	log.Printf("retrieved vessel name: %s", vescollection.Name())
 	repo := &VesselRepository{vescollection}
 
-	createDummyData(repo)
-
 	srv := micro.NewService(
 		micro.Name("vessel"),
 	)
 
 	srv.Init()
 
+	log.Printf("after init")
 	// Register our implementation with
-	pb.RegisterVesselServiceHandler(srv.Server(), &service{repo})
+	errorinreg := pb.RegisterVesselServiceHandler(srv.Server(), &service{repo})
+
+	if errorinreg != nil {
+		log.Printf("error in registering handler: %v", errorinreg)
+	}
 
 	if err := srv.Run(); err != nil {
 		fmt.Println(err)
 	}
+
+	createDummyData(repo)
 }

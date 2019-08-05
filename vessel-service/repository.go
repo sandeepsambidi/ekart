@@ -26,14 +26,18 @@ type VesselRepository struct {
 func (repo *VesselRepository) FindAvailable(spec *pb.Specification) (*pb.Vessel, error) {
 	cursor, err := repo.vesselCollection.Find(context.Background(), nil, nil)
 	if err != nil {
+		log.Fatalf("error getting vessel cursor: %v", err)
 		return nil, err
 	}
 	for cursor.Next(context.Background()) {
 		var vessel *pb.Vessel
 		err := cursor.Decode(&vessel)
 		if err != nil {
+			log.Fatalf("error decoding vessel cursor: %v", err)
 			return nil, err
 		}
+		log.Printf("Current vessel %v", vessel)
+
 		if spec.Capacity <= vessel.Capacity && spec.MaxWeight <= vessel.MaxWeight {
 			return vessel, nil
 		}
