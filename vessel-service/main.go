@@ -39,6 +39,7 @@ func main() {
 	defer dbclientconn.Disconnect(context.TODO())
 
 	vescollection := dbclientconn.Database("ekart").Collection("vessel")
+	log.Printf("retrieved vessel name: %s", vescollection.Name())
 	repo := &VesselRepository{vescollection}
 
 	createDummyData(repo)

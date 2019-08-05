@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"log"
 
 	pb "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -42,6 +43,8 @@ func (repo *VesselRepository) FindAvailable(spec *pb.Specification) (*pb.Vessel,
 
 //Create a new vessel in db
 func (repo *VesselRepository) Create(vessel *pb.Vessel) error {
+	log.Printf("create vessl: start : %+v\n", vessel)
 	_, err := repo.vesselCollection.InsertOne(context.Background(), vessel)
+	log.Fatalf("Could not create vessel: %v", err)
 	return err
 }

@@ -5,7 +5,8 @@ WORKDIR /go/src/github.com/sandeepsambidi/ekart/vessel-service
 COPY . .
 
 RUN go get -u github.com/golang/dep/cmd/dep
-RUN dep init && dep ensure
+#RUN dep init
+RUN dep ensure
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo .
 
 FROM alpine:latest
