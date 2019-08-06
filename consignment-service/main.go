@@ -42,6 +42,7 @@ func main() {
 	// Init will parse the command line flags.
 	srv.Init()
 	vesselClient := pbvessel.NewVesselService("vessel", srv.Client())
+
 	// Register handler
 	pb.RegisterShippingServiceHandler(srv.Server(), &service{repo, vesselClient})
 

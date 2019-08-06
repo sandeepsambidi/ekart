@@ -30,7 +30,7 @@ func (s *service) CreateConsignment(con context.Context, req *pbcon.Consignment,
 	vesselResponse, err := s.vesselClient.FindAvailable(context.Background(), specification)
 
 	if err != nil {
-		log.Fatalf("Failed to get vessel: %v", err)
+		log.Panicf("Failed to get vessel: %v", err)
 		return err
 	}
 

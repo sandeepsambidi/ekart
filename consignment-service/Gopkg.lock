@@ -338,7 +338,7 @@
   name = "github.com/sandeepsambidi/ekart"
   packages = ["vessel-service/proto/vessel"]
   pruneopts = "UT"
-  revision = "89441434a6b8639f7f48d67e8e18215e8d166fe8"
+  revision = "9f79dcf2c4024a8ff936d748edd1db2eb5562161"
 
 [[projects]]
   branch = "master"

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	pbcon "github.com/sandeepsambidi/ekart/consignment-service/proto/consignment"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -26,9 +27,9 @@ func (repo *Repository) Create(consignment *pbcon.Consignment) error {
 
 // GetAll consignments
 func (repo *Repository) GetAll() ([]*pbcon.Consignment, error) {
-	consCursor, err := repo.collection.Find(context.Background(), nil, nil)
+	consCursor, err := repo.collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		log.Fatalf("error getting cursor of consigment collection %v", err)
+		log.Panicf("error getting cursor of consigment collection %v", err)
 	}
 	var consignments []*pbcon.Consignment
 	for consCursor.Next(context.Background()) {
