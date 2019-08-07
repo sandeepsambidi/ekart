@@ -321,7 +321,7 @@
   name = "github.com/sandeepsambidi/ekart"
   packages = ["consignment-service/proto/consignment"]
   pruneopts = "UT"
-  revision = "d6b528999aea9dedeecfea337c62678279a8f8ed"
+  revision = "9f79dcf2c4024a8ff936d748edd1db2eb5562161"
 
 [[projects]]
   branch = "master"

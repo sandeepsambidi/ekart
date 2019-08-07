@@ -4,9 +4,9 @@ WORKDIR /go/src/github.com/sandeepsambidi/ekart/consignment-cli
 
 COPY . .
 
-RUN go get -u github.com/golang/dep/cmd/dep
+#RUN go get -u github.com/golang/dep/cmd/dep
 #RUN dep init && 
-RUN dep ensure
+#RUN dep ensure
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo .
 
 FROM alpine:latest

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"log"
 
 	pb "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
 )
@@ -14,8 +15,10 @@ type service struct {
 func (s *service) FindAvailable(ctx context.Context, req *pb.Specification, res *pb.Response) error {
 
 	// Find the next available vessel
+	log.Printf("Find available: start")
 	vessel, err := s.repo.FindAvailable(req)
 	if err != nil {
+		log.Panicf("Error in FindAvailable: %v", err)
 		return err
 	}
 

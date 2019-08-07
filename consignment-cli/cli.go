@@ -41,18 +41,18 @@ func main() {
 	consignment, err := parseFile(file)
 
 	if err != nil {
-		log.Fatalf("Could not parse file: %v", err)
+		log.Panicf("Could not parse file: %v", err)
 	}
 
-	r, err := client.CreateConsignment(context.TODO(), consignment)
+	r, err := client.CreateConsignment(context.Background(), consignment)
 	if err != nil {
-		log.Fatalf("Could not create: %v", err)
+		log.Panicf("Could not create: %v", err)
 	}
 	log.Printf("Created: %t", r.Created)
 
 	getAll, err := client.GetConsignments(context.Background(), &pb.GetRequest{})
 	if err != nil {
-		log.Fatalf("Could not list consignments: %v", err)
+		log.Panicf("Could not list consignments: %v", err)
 	}
 	for _, v := range getAll.Consignments {
 		log.Println(v)

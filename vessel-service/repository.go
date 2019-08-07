@@ -6,6 +6,7 @@ import (
 	"log"
 
 	pb "github.com/sandeepsambidi/ekart/vessel-service/proto/vessel"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -24,7 +25,7 @@ type VesselRepository struct {
 // if capacity and max weight are below a vessels capacity and max weight,
 // then return that vessel.
 func (repo *VesselRepository) FindAvailable(spec *pb.Specification) (*pb.Vessel, error) {
-	cursor, err := repo.vesselCollection.Find(context.Background(), nil, nil)
+	cursor, err := repo.vesselCollection.Find(context.Background(), bson.D{})
 	if err != nil {
 		log.Fatalf("error getting vessel cursor: %v", err)
 		return nil, err
@@ -42,6 +43,7 @@ func (repo *VesselRepository) FindAvailable(spec *pb.Specification) (*pb.Vessel,
 			return vessel, nil
 		}
 	}
+	log.Printf("No vessel found for the spec")
 	return nil, errors.New("No vessel found by that spec")
 }
 
@@ -49,6 +51,9 @@ func (repo *VesselRepository) FindAvailable(spec *pb.Specification) (*pb.Vessel,
 func (repo *VesselRepository) Create(vessel *pb.Vessel) error {
 	log.Printf("create vessl: start : %+v\n", vessel)
 	_, err := repo.vesselCollection.InsertOne(context.Background(), vessel)
-	log.Fatalf("Could not create vessel: %v", err)
-	return err
+	log.Printf("Could not create vessel: %v", err)
+	if err != nil {
+		return err
+	}
+	return nil
 }

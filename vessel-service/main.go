@@ -41,7 +41,7 @@ func main() {
 	vescollection := dbclientconn.Database("ekart").Collection("vessel")
 	log.Printf("retrieved vessel name: %s", vescollection.Name())
 	repo := &VesselRepository{vescollection}
-
+	createDummyData(repo)
 	srv := micro.NewService(
 		micro.Name("vessel"),
 	)
@@ -59,6 +59,4 @@ func main() {
 	if err := srv.Run(); err != nil {
 		fmt.Println(err)
 	}
-
-	createDummyData(repo)
 }
